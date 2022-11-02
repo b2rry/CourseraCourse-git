@@ -1,0 +1,24 @@
+body{
+  background-color: white;
+  margin: 10 auto;
+}
+h1{
+  text-align: center;
+  font-family: arial;
+  background-color: lightgreen;
+}
+.div1{
+  background-color: green;
+  color: white;
+  border-bottom-style: solid;
+  border-color: black;
+}
+.div2{
+  background-color: red;
+  color: black;
+  border-bottom-style: solid;
+  border-color: black;
+}
+#b1{
+  background-color:lightgrey;
+}

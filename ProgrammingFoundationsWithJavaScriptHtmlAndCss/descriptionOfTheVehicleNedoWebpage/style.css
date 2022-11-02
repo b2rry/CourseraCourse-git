@@ -1,0 +1,33 @@
+body{
+  background-color: GhostWhite;
+  margin: 10 auto;
+}
+.marginLeft{
+  margin-left:20px;
+}
+.bodiesTable {
+  border-style: solid;
+  background-color: White;
+  text-align: center;
+  border-color: Black;
+}
+#carImg{
+  border-style: solid;
+  border-color: Black;
+  display:block;
+  margin:auto;
+}
+.divBorder{
+  border-bottom-style: solid;
+  border-color: Black;
+}
+p{
+  color: Gray;
+  margin-left:10px;
+}
+.divTopBottomColor{
+  background-color: #CEE7E8;
+}
+h1{
+  text-align: center;
+}

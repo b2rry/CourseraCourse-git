@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - ChangeImgToGrey</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<script src="https://www.dukelearntoprogram.com/course1/common/js/image/SimpleImage.js"></script>
+<h1>On this page we will load image and change it</h1>
+<p id = "loadText">Load image:
+  <input type = "file" multiple = "false" accept = "image/*" id = "fInput" onchange = "upload()">
+</p>
+<p id = "loadText">Change color of your image:
+  <input type = "button" value = "Change" onclick = "changeColor()" id = "chCol" >
+</p>
+<p>Loaded image:</p>
+<canvas id = "can1"></canvas>
+<p>Result image:</p>
+<canvas id = "can2"></canvas>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+canvas{
+  height: 350px;
+  width: 600px;
+  border: 1px solid lightgrey;
+}
+#loadText{
+  font-size: 1.6rem;
+  background-color: lightgrey;
+  text-align: center;
+}
+body{
+  background-color: GhostWhite;
+}
+h1{
+  background-color: green;
+  text-align: center;
+}
+#hh2{
+  background-color: lightGreen;
+  text-align: center;
+}
+#hh3{
+  background-color: Red;
+  text-align: center;
+}

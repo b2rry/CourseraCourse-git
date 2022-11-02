@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - MiniProject_HandlerForPixelsInPhoto</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<script src="https://www.dukelearntoprogram.com/course1/common/js/image/SimpleImage.js">
+</script>
+<h1>Welcom to PixelHandler!</h1>
+<h3>You can ...</h3>
+<p>Load your image <input type = "file" multiple = "false" accept = "image/*" id = "inputImage" onchange = "loadPicture()"></p>
+<canvas id = "can1"></canvas>
+<p>Dimension of your Image: <output id = "width">0</output> x <output id = "height">0</output> </p>
+<p>Set Your values on that, will be increse or reduce (with "+" sign and "-" sign respectively) values of colors segments in pixels</p>
+<div>
+  <p>Value of Red segment: <input type = "range" min = "-255" max = "255" value = "0" id = "rangeRed" onchange = "setRedValue()"> <output id = "redValueId">0</output></p>
+  <p>Value of Green segment: <input type = "range" min = "-255" max = "255" value = "0" id = "rangeGreen" onchange = "setGreenValue()"> <output id = "greenValueId">0</output></p>
+  <p>Value of Blue segment   <input type = "range" min = "-255" max = "255" value = "0" id = "rangeBlue" onchange = "setBlueValue()"> <output id = "blueValueId">0</output></p>
+</div>
+<p id = "loadText">Convert your picture: <input type = "button" value = "Run" onclick = "convertImage()" id = "buttonConvert" ></p>
+<!-- <p><output id = "a">0</output></p>
+<p><output id = "b">0</output></p> -->
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>

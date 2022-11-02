@@ -1,0 +1,12 @@
+canvas{
+  height: 400px;
+  width: 600px;
+  border: 1px solid lightgrey;
+}
+#loadText{
+  font-size: 1.6rem;
+  background-color: lightgrey;
+}
+h1{
+  background-color: lightgreen;
+}
