@@ -1,6 +1,10 @@
-public class GenesFinderClass {
+import edu.duke.DirectoryResource;
+import edu.duke.FileResource;
+import java.io.File;
 
+public class GenesFinderClass {
     public void outputAllGenesFromDna(String dna){ //and amount of it
+        dna = dna.toUpperCase();
         int startPos = 0;
         int geneCounter = 0;
         boolean noGeneFlag = false;
@@ -15,7 +19,17 @@ public class GenesFinderClass {
         }
         System.out.println("Amount of genes in this dna - " + geneCounter);
     }
-
+    public void outputAllGenesFromFileWithDna(){
+        File file = null;
+        DirectoryResource dr = new DirectoryResource();
+        for (File f : dr.selectedFiles()) {
+            file = f;
+        }
+        FileResource fr = new FileResource(file);
+        String dna = fr.asString();
+        dna = dna.toUpperCase();
+        outputAllGenesFromDna(dna);
+    }
     public String findNextGene(String dna, int startPos){
         boolean exitFlag = false;
         boolean findStartGeneFlag = true;
@@ -82,4 +96,4 @@ public class GenesFinderClass {
         return foundGene;
     }
 
-}//ATGCCCCCCTAA
+}
