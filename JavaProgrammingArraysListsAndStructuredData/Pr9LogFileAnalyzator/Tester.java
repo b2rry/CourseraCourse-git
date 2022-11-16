@@ -13,7 +13,7 @@ public class Tester
     
     public LogAnalyzer testLogAnalyzer() {
         LogAnalyzer analyzer = new LogAnalyzer();
-        analyzer.readFile("weblog1_log");
+        analyzer.readFile("weblog3-short_log");
         return analyzer;
     }
     public void printAll(){
@@ -67,5 +67,22 @@ public class Tester
             }
         }
         return uniqueIPsInRange.size();//соответственно можно было передать счетчик
+    }
+    public void testAmountEachIP(){
+        LogAnalyzer analyzer = testLogAnalyzer();
+        HashMap<String,Integer> map = analyzer.returnAmountEachIPMap();
+        System.out.println("IPs with their amount of appears: "+map);
+        int maxAppear = analyzer.mostNumberVisitsByIP(map);
+        System.out.println("Maximum appears of single IP in this file: "+maxAppear);
+        ArrayList<String> iPsHighFrequency = analyzer.iPsMostVisits(map,maxAppear);
+        System.out.println("IPs that appears most often in this file: "+iPsHighFrequency);
+        HashMap<String,ArrayList<String>> days = analyzer.iPsForDays();
+        for(String key : days.keySet()){
+            System.out.println(key+" ips: " + days.get(key));
+
+        }
+        System.out.println("Day with maximum visits: " +analyzer.returnMaxVisitDay(days));
+        ArrayList<String> mostIPsInDay = analyzer.iPsWithMostVisitsOnDay(days, "Sep 14", uniqueIPVisitsOnDay("Sep 14"));
+        System.out.println("This ips visit site the most in your day: " + mostIPsInDay);
     }
 }
