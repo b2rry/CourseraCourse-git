@@ -1,10 +1,11 @@
 import edu.duke.FileResource;
 
+import java.util.HashSet;
+
 public class Main {
     public static void main(String[] args) {
         Main main = new Main();
-        main.testTryKeyLengthMethod();
-        main.testBreakVigenereMethod();
+        main.testNewBreakVigenereMethod();
     }
     //*************************************************
     public void testCaesarCipher(){
@@ -47,7 +48,15 @@ public class Main {
     public void testBreakVigenereMethod(){
         VigenereBreaker obj1 = new VigenereBreaker();
         FileResource fr = new FileResource();
-        String test1 = obj1.breakVigenere(fr.asString());
-        System.out.println(test1);
+        //String test1 = obj1.breakVigenere(fr.asString());
+        //System.out.println(test1);
+    }
+    public void testNewBreakVigenereMethod(){
+        VigenereBreaker obj1 = new VigenereBreaker();
+        FileResource fr = new FileResource();
+        HashSet<String> dictionary = obj1.returnDictionary(fr);
+        FileResource frM = new FileResource();
+        String pizdec = obj1.breakVigenere(frM.asString(),dictionary,60);
+        System.out.println(pizdec);
     }
 }

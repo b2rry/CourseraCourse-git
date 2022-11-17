@@ -16,6 +16,13 @@ public class VigenereBreaker {
         }
         return mass;
     }
+    public int maxNumInIntMass(int[] mass){
+        int maxNum = 0;
+        for(int i = 0; i < mass.length; i++){
+            if(mass[i] > maxNum) maxNum = mass[i];
+        }
+        return maxNum;
+    }
     public String sliceString(String encryptedMessage, int whichSlice, int totalSlices) { //abcdefghijklmnop
         String retMessage = "";
         for(int ind = whichSlice; ind < encryptedMessage.length(); ind += totalSlices){
@@ -33,9 +40,31 @@ public class VigenereBreaker {
         }
         return key;
     }
-
-    public String breakVigenere (String encryptedMassage) {
-        int keyLength = 4; // нужно узнавать
+    public HashSet<String> returnDictionary(FileResource fr){
+        HashSet<String> dictionary = new HashSet<String>();
+        for(String line : fr.lines()){
+            dictionary.add(line.toLowerCase());
+        }
+        return dictionary;
+    }
+    public int countWords(String message, HashSet<String> dictionary){
+        message = message.toLowerCase();
+        String[] words = message.split("\\W+");
+        int counter = 0;
+        int repeted = 0;
+        for(int wordNum = 0; wordNum < words.length; wordNum++){
+            for(String wordFromDictionary : dictionary) {
+                if (wordFromDictionary.equals(words[wordNum])) {
+                    counter++;
+                    break;
+                }
+            }
+            repeted++;
+            if(repeted == 20) break;
+        }
+        return counter;
+    }
+    public String decryptWithKeyLength(String encryptedMassage, int keyLength){
         char mostCommon = 'e'; // нужно узнавать
 
         String[] fragmentedStringsMass = new String[keyLength];
@@ -57,5 +86,25 @@ public class VigenereBreaker {
             }
         }
         return decryptedMessage.toString();
+    }
+    public String breakVigenere (String encryptedMassage, HashSet<String> dictionary, int maxKeyAmountValue) {
+        int[] amountRealWordsInDecMessages = new int[101];
+        for(int currKeyLength = 1; currKeyLength <= maxKeyAmountValue; currKeyLength++){
+            String currDecryptedMassage = decryptWithKeyLength(encryptedMassage,currKeyLength);
+            amountRealWordsInDecMessages[currKeyLength] = countWords(currDecryptedMassage, dictionary);
+            System.out.print("1 ");
+        }
+        int maxAmountOfWords = maxNumInIntMass(amountRealWordsInDecMessages);
+        int foundKey = 0;
+        for( int i = 0; i < amountRealWordsInDecMessages.length; i++){
+            if(amountRealWordsInDecMessages[i] == maxAmountOfWords){
+                System.out.println("Found key length: " + i);
+                foundKey = i;
+                break;
+            }
+        }
+        System.out.println("Maximum real words in array (from 20 first): "+ maxAmountOfWords+"\n");
+        String decryptedMassage = decryptWithKeyLength(encryptedMassage,foundKey);
+        return decryptedMassage;
     }
 }
