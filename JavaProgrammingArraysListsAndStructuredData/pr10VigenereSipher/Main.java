@@ -1,5 +1,7 @@
 import edu.duke.FileResource;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class Main {
@@ -53,10 +55,9 @@ public class Main {
     }
     public void testNewBreakVigenereMethod(){
         VigenereBreaker obj1 = new VigenereBreaker();
-        FileResource fr = new FileResource();
-        HashSet<String> dictionary = obj1.returnDictionary(fr);
+        ArrayList<HashMap> settings = obj1.dictionariesSettings();
         FileResource frM = new FileResource();
-        String pizdec = obj1.breakVigenere(frM.asString(),dictionary,60);
-        System.out.println(pizdec);
+        String decrypted = obj1.breakVigenere(frM.asString(), 20, settings);
+        System.out.println(decrypted);
     }
 }

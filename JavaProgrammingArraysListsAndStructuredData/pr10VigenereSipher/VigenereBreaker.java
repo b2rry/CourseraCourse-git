@@ -1,5 +1,6 @@
 import java.util.*;
 import edu.duke.*;
+import java.io.*;
 
 public class VigenereBreaker {
 
@@ -16,10 +17,10 @@ public class VigenereBreaker {
         }
         return mass;
     }
-    public int maxNumInIntMass(int[] mass){
+    public int maxNumInIntList(ArrayList<Integer> list){
         int maxNum = 0;
-        for(int i = 0; i < mass.length; i++){
-            if(mass[i] > maxNum) maxNum = mass[i];
+        for(int i : list){
+            if(i > maxNum) maxNum = i;
         }
         return maxNum;
     }
@@ -60,13 +61,34 @@ public class VigenereBreaker {
                 }
             }
             repeted++;
-            if(repeted == 20) break;
+            if(repeted >= 40) break;//количество проверяемых на действительность первых слов для расшифрованного сообщения
         }
         return counter;
     }
-    public String decryptWithKeyLength(String encryptedMassage, int keyLength){
-        char mostCommon = 'e'; // нужно узнавать
-
+    public char mostCommonCharIn(HashSet<String> dictionary){
+        HashMap<Character,Integer> lettersAmountsInDictionary = new HashMap<Character,Integer>();
+        for(String word : dictionary){
+            for(char letter : word.toCharArray()){
+                if(lettersAmountsInDictionary.containsKey(letter)){
+                    lettersAmountsInDictionary.put(letter,lettersAmountsInDictionary.get(letter)+1);
+                }else{
+                    lettersAmountsInDictionary.put(letter,1);
+                }
+            }
+        }
+        int maxOccurrences = 0;
+        char mostCommon = 'Ж';
+        for(char letter : lettersAmountsInDictionary.keySet()){
+            if(lettersAmountsInDictionary.get(letter) > maxOccurrences){
+                maxOccurrences = lettersAmountsInDictionary.get(letter);
+                mostCommon = letter;
+            }
+        }
+        //System.out.println("Found most common letter in dictionary: "+mostCommon);
+        //System.out.println(lettersAmountsInDictionary);
+        return mostCommon;
+    }
+    public String decryptWithKeyLength(String encryptedMassage, int keyLength, char mostCommon){
         String[] fragmentedStringsMass = new String[keyLength];
         fragmentedStringsMass = initializeStringMass(fragmentedStringsMass);
         int[] key = tryKeyLength(encryptedMassage, keyLength, mostCommon);
@@ -87,24 +109,77 @@ public class VigenereBreaker {
         }
         return decryptedMessage.toString();
     }
-    public String breakVigenere (String encryptedMassage, HashSet<String> dictionary, int maxKeyAmountValue) {
-        int[] amountRealWordsInDecMessages = new int[101];
-        for(int currKeyLength = 1; currKeyLength <= maxKeyAmountValue; currKeyLength++){
-            String currDecryptedMassage = decryptWithKeyLength(encryptedMassage,currKeyLength);
-            amountRealWordsInDecMessages[currKeyLength] = countWords(currDecryptedMassage, dictionary);
-            System.out.print("1 ");
-        }
-        int maxAmountOfWords = maxNumInIntMass(amountRealWordsInDecMessages);
-        int foundKey = 0;
-        for( int i = 0; i < amountRealWordsInDecMessages.length; i++){
-            if(amountRealWordsInDecMessages[i] == maxAmountOfWords){
-                System.out.println("Found key length: " + i);
-                foundKey = i;
-                break;
+    public String breakVigenere (String encryptedMassage, int maxKeyAmountValue, ArrayList<HashMap> dictionariesAndLetters) {
+        HashMap<String,ArrayList<Integer>> amountRealWordsInDecMessagesOfLanguages = new HashMap<String,ArrayList<Integer>>();
+        HashMap<String,HashSet<String>> dictionarIES = dictionariesAndLetters.get(0);
+        HashMap<String,Character> commonLettERS = dictionariesAndLetters.get(1);
+        for(String language : commonLettERS.keySet()){
+            amountRealWordsInDecMessagesOfLanguages.put(language,new ArrayList<>(101));
+            for(int ind = 0; ind < 101; ind++) {
+                amountRealWordsInDecMessagesOfLanguages.get(language).add(ind, 0);
             }
         }
-        System.out.println("Maximum real words in array (from 20 first): "+ maxAmountOfWords+"\n");
-        String decryptedMassage = decryptWithKeyLength(encryptedMassage,foundKey);
+        //ArrayList<Integer> amountRealWordsInDecMessages = new ArrayList<>(101);
+        for(int currKeyLength = 1; currKeyLength <= maxKeyAmountValue; currKeyLength++){
+            System.out.print("Processed languages in key "+currKeyLength+": ");
+            for(String language : dictionarIES.keySet()) {
+                String currDecryptedMassage = decryptWithKeyLength(encryptedMassage, currKeyLength, commonLettERS.get(language));
+                //amountRealWordsInDecMessages.add(currKeyLength, countWords(currDecryptedMassage, dictionary));
+                int amount = countWords(currDecryptedMassage, dictionarIES.get(language));
+                ArrayList<Integer> buf = amountRealWordsInDecMessagesOfLanguages.get(language);
+                buf.add(currKeyLength,amount);
+                amountRealWordsInDecMessagesOfLanguages.put(language, buf);
+                System.out.print(language+" ");
+            }
+            System.out.println();
+        }
+        System.out.println("\n");
+        int maxAmountOfWordsInLanguage = 0;
+        int maxAmountOfWords = 0;
+        int foundKeyInLanguage = 0;
+        int foundKey = 0;
+        String foundLanguage = "";
+
+        for(String language : dictionarIES.keySet()) {
+            ArrayList<Integer> buf = amountRealWordsInDecMessagesOfLanguages.get(language);
+            maxAmountOfWordsInLanguage = maxNumInIntList(buf);
+            int size = buf.size();
+            for (int i = 0; i < size; i++) {
+                if (buf.get(i) == maxAmountOfWordsInLanguage) {
+                    System.out.println("Language: "+language+" Found key in it: " + i +" Maximum real words(from 40 first): "+maxAmountOfWordsInLanguage);
+                    foundKeyInLanguage = i;
+                    break;
+                }
+            }
+            if(maxAmountOfWordsInLanguage > maxAmountOfWords){
+                maxAmountOfWords = maxAmountOfWordsInLanguage;
+                foundKey = foundKeyInLanguage;
+                foundLanguage = language;
+            }
+        }
+        System.out.println("\nFound language: "+foundLanguage);
+        System.out.println("Found key: "+foundKey);
+        System.out.println("Maximum real words in array (from 40 first): "+ maxAmountOfWords+"\n");
+        String decryptedMassage = decryptWithKeyLength(encryptedMassage,foundKey,commonLettERS.get(foundLanguage));
         return decryptedMassage;
+    }
+    public ArrayList<HashMap> dictionariesSettings(){
+        System.out.println("Select all dictionaries");
+        DirectoryResource dr = new DirectoryResource();
+        HashMap<String,HashSet<String>> dictionarIES = new HashMap<String,HashSet<String>>();
+        HashMap<String,Character> commonLettERS = new HashMap<String,Character>();
+        ArrayList<HashMap> dictionariesAndLetters = new ArrayList<HashMap>();
+        for(File f : dr.selectedFiles()){
+            String fName = f.getName();
+            FileResource fr = new FileResource(f);
+            HashSet<String> dictionary = returnDictionary(fr);
+            dictionarIES.put(fName,dictionary);
+            char mostCommon = mostCommonCharIn(dictionary);
+            commonLettERS.put(fName,mostCommon);
+            System.out.println("Found most common letter in " + fName + " language: " + mostCommon);
+        }
+        dictionariesAndLetters.add(dictionarIES);//0
+        dictionariesAndLetters.add(commonLettERS);//1
+        return dictionariesAndLetters;
     }
 }
