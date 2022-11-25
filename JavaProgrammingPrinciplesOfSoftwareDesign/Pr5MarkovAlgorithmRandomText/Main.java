@@ -4,12 +4,8 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        //Main run = new Main();
-        MarkovRunner run = new MarkovRunner();
-        //Main a = new Main();
-        //a.testGetFollowsWithFile();
-        //run.runMarkovZero();
-        run.runMarkovModel();
+        MarkovRunnerWithInterface run = new MarkovRunnerWithInterface(615);
+        run.runMarkov();
     }
     public void testGetFollows(){
         //MarkovRunner run = new MarkovRunner();

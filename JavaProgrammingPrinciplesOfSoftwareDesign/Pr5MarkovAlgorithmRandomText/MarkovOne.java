@@ -3,16 +3,10 @@ import edu.duke.FileResource;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class MarkovOne {
-    private String myText;
-    private Random myRandom;
+public class MarkovOne extends AbstractMarkovModel{
 
     public MarkovOne() {
-        myRandom = new Random();
-    }
-
-    public void setRandom(int seed){
-        myRandom = new Random(seed);
+        super(1);
     }
 
     public void setTraining(String s){
@@ -38,21 +32,5 @@ public class MarkovOne {
         }
 
         return sb.toString();
-    }
-    public ArrayList<String> getFollows(String key){
-        FileResource fr = new FileResource();
-        myText = fr.asString();
-        ArrayList<String> follows = new ArrayList<String>();
-        int prInd = 0;
-        while(true) {
-            int nextInd = myText.indexOf(key, prInd);
-            if (nextInd != -1 && nextInd != myText.length()-key.length()) {
-                follows.add(myText.substring(nextInd + key.length(), nextInd + key.length()+1));
-            }else{
-                break;
-            }
-            prInd = nextInd+1;
-        }
-        return follows;
     }
 }

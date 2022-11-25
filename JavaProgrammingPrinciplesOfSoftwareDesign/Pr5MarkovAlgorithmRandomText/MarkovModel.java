@@ -1,23 +1,18 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-public class MarkovModel {
-    private String myText;
-    private Random myRandom;
+public class MarkovModel extends AbstractMarkovModel{
 
-    public MarkovModel() {
-        myRandom = new Random();
+    public MarkovModel(int prNum) {
+        super(prNum);
     }
 
-    public void setRandom(int seed){
-        myRandom = new Random(seed);
-    }
 
     public void setTraining(String s){
         myText = s.trim();
     }
 
-    public String getRandomText(int numChars,int predictNum){
+    public String getRandomText(int numChars){
         if (myText == null){
             return "";
         }
@@ -36,19 +31,5 @@ public class MarkovModel {
         }
 
         return sb.toString();
-    }
-    public ArrayList<String> getFollows(String key){
-        ArrayList<String> follows = new ArrayList<String>();
-        int prInd = 0;
-        while(true) {
-            int nextInd = myText.indexOf(key, prInd);
-            if (nextInd != -1 && nextInd != myText.length()-key.length()) {
-                follows.add(myText.substring(nextInd + key.length(), nextInd + key.length()+1));
-            }else{
-                break;
-            }
-            prInd = nextInd+1;
-        }
-        return follows;
     }
 }

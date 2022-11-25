@@ -29,11 +29,11 @@ public class MarkovRunner {
 		FileResource fr = new FileResource();
 		String st = fr.asString();
 		st = st.replace('\n', ' ');
-		MarkovModel markov = new MarkovModel();
+		MarkovModel markov = new MarkovModel(3);
 		markov.setTraining(st);
 		markov.setRandom(365);
 		for(int k=0; k < 3; k++){
-			String text = markov.getRandomText(500,8);
+			String text = markov.getRandomText(500);
 			printOut(text);
 		}
 	}
